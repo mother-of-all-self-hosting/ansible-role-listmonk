@@ -1,0 +1,39 @@
+{% if listmonk_container_labels_traefik_enabled %}
+{% if listmonk_container_labels_traefik_docker_network %}
+traefik.docker.network={{ listmonk_container_labels_traefik_docker_network }}
+{% endif %}
+
+{% set middlewares = [] %}
+
+{% if listmonk_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
+{% for name, value in listmonk_container_labels_traefik_additional_request_headers.items() %}
+traefik.http.middlewares.{{ listmonk_identifier }}-add-request-headers.headers.customrequestheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [listmonk_identifier + '-add-request-headers'] %}
+{% endif %}
+
+{% if listmonk_container_labels_traefik_additional_response_headers.keys() | length > 0 %}
+{% for name, value in listmonk_container_labels_traefik_additional_response_headers.items() %}
+traefik.http.middlewares.{{ listmonk_identifier }}-add-response-headers.headers.customresponseheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [listmonk_identifier + '-add-response-headers'] %}
+{% endif %}
+
+traefik.enable=true
+{% endif %}
+traefik.http.routers.{{ listmonk_identifier }}.rule=Host("{{ listmonk_hostname }}")
+{% if listmonk_container_labels_traefik_priority | int > 0 %}
+traefik.http.routers.{{ listmonk_identifier }}.priority={{ listmonk_container_labels_traefik_priority }}
+{% endif %}
+{% if middlewares | length > 0 %}
+traefik.http.routers.{{ listmonk_identifier }}.middlewares={{ middlewares | join(',') }}
+{% endif %}
+traefik.http.routers.{{ listmonk_identifier }}.service={{ listmonk_identifier }}
+traefik.http.routers.{{ listmonk_identifier }}.entrypoints={{ listmonk_container_labels_traefik_entrypoints }}
+traefik.http.routers.{{ listmonk_identifier }}.tls={{ listmonk_container_labels_traefik_tls | to_json }}
+{% if listmonk_container_labels_traefik_tls %}
+traefik.http.routers.{{ listmonk_identifier }}.tls.certResolver={{ listmonk_container_labels_traefik_tls_certResolver }}
+{% endif %}
+traefik.http.services.{{ listmonk_identifier }}.loadbalancer.server.port={{ listmonk_container_http_port }}
+
+{{ listmonk_container_labels_additional_labels }}

@@ -1,0 +1,2 @@
+---
+listmonk_users: "{{ listmonk_users_auto + listmonk_users_additional }}"

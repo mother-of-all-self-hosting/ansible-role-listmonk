@@ -1,0 +1,47 @@
+[Unit]
+Description=GotoSocial ActivityPub Server ({{ listmonk_identifier }})
+{% for service in listmonk_systemd_required_services_list %}
+Requires={{ service }}
+After={{ service }}
+{% endfor %}
+{% for service in listmonk_systemd_wanted_services_list %}
+Wants={{ service }}
+{% endfor %}
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} stop --time={{ devture_systemd_docker_base_container_stop_grace_time_seconds }} {{ listmonk_identifier }} 2>/dev/null || true'
+ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ listmonk_identifier }} 2>/dev/null || true'
+
+ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
+                --rm \
+                --name={{ listmonk_identifier }} \
+                --log-driver=none \
+                --user={{ listmonk_uid }}:{{ listmonk_gid }} \
+                --cap-drop=ALL \
+                {% if listmonk_container_http_host_bind_port %}
+                -p {{ listmonk_container_http_host_bind_port }}:{{ listmonk_container_http_port }} \
+                {% endif %}
+                --label-file={{ listmonk_config_path }}/labels \
+                --network={{ listmonk_container_network }} \
+                --mount type=bind,src={{ listmonk_data_path }},dst=/listmonk/uploads \
+                --read-only \
+                --tmpfs=/tmp:rw,noexec,nosuid,size={{ listmonk_container_tmp_size }} \
+                --env-file={{ listmonk_env_path }} \
+                {{ listmonk_container_image }}
+
+{% for network in listmonk_container_additional_networks %}
+ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ listmonk_identifier }}
+{% endfor %}
+
+ExecStart={{ devture_systemd_docker_base_host_command_docker }} start --attach {{ listmonk_identifier }}
+
+ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} stop --time={{ devture_systemd_docker_base_container_stop_grace_time_seconds }} {{ listmonk_identifier }} 2>/dev/null || true'
+ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ listmonk_identifier }} 2>/dev/null || true'
+Restart=always
+RestartSec=30
+SyslogIdentifier={{ listmonk_identifier }}
+
+[Install]
+WantedBy=multi-user.target

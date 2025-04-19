@@ -1,0 +1,23 @@
+---
+
+- name: Check existence of listmonk systemd service
+  ansible.builtin.stat:
+    path: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"
+  register: listmonk_service_stat
+
+- when: listmonk_service_stat.stat.exists | bool
+  block:
+    - name: Ensure listmonk service is stopped
+      ansible.builtin.service:
+        name: "{{ listmonk_identifier }}"
+        state: stopped
+        daemon_reload: true
+    - name: Ensure listmonk service doesn't exist
+      ansible.builtin.file:
+        dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"
+        state: absent
+
+    - name: Ensure listmonk base path is files deleted (make sure to delete node data)
+      ansible.builtin.file:
+        path: "{{ listmonk_base_path }}"
+        state: absent
