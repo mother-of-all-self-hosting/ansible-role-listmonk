@@ -1,5 +1,5 @@
 [Unit]
-Description=GotoSocial ActivityPub Server ({{ listmonk_identifier }})
+Description=Listmonk Newsletter Management ({{ listmonk_identifier }})
 {% for service in listmonk_systemd_required_services_list %}
 Requires={{ service }}
 After={{ service }}
@@ -26,10 +26,8 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
                 --label-file={{ listmonk_config_path }}/labels \
                 --network={{ listmonk_container_network }} \
                 --mount type=bind,src={{ listmonk_data_path }},dst=/listmonk/uploads \
-                --read-only \
-                --tmpfs=/tmp:rw,noexec,nosuid,size={{ listmonk_container_tmp_size }} \
                 --env-file={{ listmonk_env_path }} \
-                {{ listmonk_container_image }}
+                {{ listmonk_container_image }} ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
 
 {% for network in listmonk_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ listmonk_identifier }}
