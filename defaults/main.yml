@@ -49,7 +49,7 @@ listmonk_container_additional_networks: "{{ listmonk_container_additional_networ
 listmonk_container_additional_networks_auto: []
 listmonk_container_additional_networks_custom: []
 
-listmonk_database_hostname: ''
+listmonk_database_host: ''
 listmonk_database_port: 5432
 listmonk_database_name: listmonk
 listmonk_database_username: listmonk
