@@ -8,6 +8,7 @@
 listmonk_enabled: true
 listmonk_identifier: listmonk
 
+# The hostname at which listmonk is served.
 listmonk_hostname: ''
 
 listmonk_uid: ''
@@ -18,11 +19,13 @@ listmonk_config_path: "{{ listmonk_base_path }}/config"
 listmonk_data_path: "{{ listmonk_base_path }}/data"
 listmonk_env_path: "{{ listmonk_config_path }}/env"
 
+# List of systemd services that the listmonk systemd service depends on
 listmonk_systemd_required_services_list: "{{ listmonk_systemd_required_services_list_default + listmonk_systemd_required_services_list_auto + listmonk_systemd_required_services_list_custom }}"
 listmonk_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 listmonk_systemd_required_services_list_auto: []
 listmonk_systemd_required_services_list_custom: []
 
+# List of systemd services that the listmonk systemd service wants
 listmonk_systemd_wanted_services_list: "{{ listmonk_systemd_wanted_services_list_default + listmonk_systemd_wanted_services_list_auto + listmonk_systemd_wanted_services_list_custom }}"
 listmonk_systemd_wanted_services_list_default: []
 listmonk_systemd_wanted_services_list_auto: []
@@ -38,6 +41,7 @@ listmonk_container_image_registry_prefix_upstream_default: docker.io/
 listmonk_container_image_tag: "v{{ listmonk_version }}"
 listmonk_container_image_force_pull: "{{ listmonk_container_image.endswith(':latest') }}"
 
+# The base container network. It will be auto-created by this role if it doesn't exist already.
 listmonk_container_network: '{{ listmonk_identifier }}'
 
 # The port number in the container
