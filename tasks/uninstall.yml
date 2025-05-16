@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2024 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
@@ -11,17 +12,19 @@
 
 - when: listmonk_service_stat.stat.exists | bool
   block:
-    - name: Ensure listmonk service is stopped
+    - name: Ensure listmonk systemd service is stopped
       ansible.builtin.service:
         name: "{{ listmonk_identifier }}"
         state: stopped
+        enabled: false
         daemon_reload: true
-    - name: Ensure listmonk service doesn't exist
+
+    - name: Ensure listmonk systemd service does not exist
       ansible.builtin.file:
-        dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"
         state: absent
 
-    - name: Ensure listmonk base path is files deleted (make sure to delete node data)
+    - name: Ensure listmonk path does not exist
       ansible.builtin.file:
         path: "{{ listmonk_base_path }}"
         state: absent
