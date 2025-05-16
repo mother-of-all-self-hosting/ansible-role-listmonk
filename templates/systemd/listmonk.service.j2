@@ -22,19 +22,19 @@ ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_s
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ listmonk_identifier }} 2>/dev/null || true'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-                --rm \
-                --name={{ listmonk_identifier }} \
-                --log-driver=none \
-                --user={{ listmonk_uid }}:{{ listmonk_gid }} \
-                --cap-drop=ALL \
-                --network={{ listmonk_container_network }} \
-                {% if listmonk_container_http_host_bind_port %}
-                -p {{ listmonk_container_http_host_bind_port }}:{{ listmonk_container_http_port }} \
-                {% endif %}
-                --env-file={{ listmonk_env_path }} \
-                --label-file={{ listmonk_config_path }}/labels \
-                --mount type=bind,src={{ listmonk_data_path }},dst=/listmonk/uploads \
-                {{ listmonk_container_image }} ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
+      --rm \
+      --name={{ listmonk_identifier }} \
+      --log-driver=none \
+      --user={{ listmonk_uid }}:{{ listmonk_gid }} \
+      --cap-drop=ALL \
+      --network={{ listmonk_container_network }} \
+      {% if listmonk_container_http_host_bind_port %}
+      -p {{ listmonk_container_http_host_bind_port }}:{{ listmonk_container_http_port }} \
+      {% endif %}
+      --env-file={{ listmonk_env_path }} \
+      --label-file={{ listmonk_config_path }}/labels \
+      --mount type=bind,src={{ listmonk_data_path }},dst=/listmonk/uploads \
+      {{ listmonk_container_image }} ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
 
 {% for network in listmonk_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ listmonk_identifier }}
