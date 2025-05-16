@@ -78,7 +78,7 @@ listmonk_database_sslmode: disable
 listmonk_environment_variables_additional_variables: ''
 
 # listmonk_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
-# See `roles/custom/listmonk_listmonk/templates/labels.j2` for details.
+# See `../templates/labels.j2` for details.
 #
 # To inject your own other container labels, see `listmonk_container_labels_additional_labels`.
 listmonk_container_labels_traefik_enabled: false
@@ -156,7 +156,7 @@ listmonk_floc_optout_enabled: true
 listmonk_hsts_preload_enabled: false
 
 # listmonk_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `roles/custom/collabora_online/templates/labels.j2` for details.
+# See `../templates/labels.j2` for details.
 #
 # Example:
 # listmonk_container_labels_additional_labels: |
