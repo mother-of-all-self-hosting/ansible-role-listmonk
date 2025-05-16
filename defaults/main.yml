@@ -68,10 +68,10 @@ listmonk_database_sslmode: disable
 # You can use this to further influence the default configuration.
 #
 # Example:
-# listmonk_environment_variables_extension: |
+# listmonk_environment_variables_additional_variables: |
 #   LISTMONK_ADMIN_USER=admin
 #   LISTMONK_ADMIN_PASSWORD=SUPERSECRETPASSWORD
-listmonk_environment_variables_extension: ''
+listmonk_environment_variables_additional_variables: ''
 
 # listmonk_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `roles/custom/listmonk_listmonk/templates/labels.j2` for details.
