@@ -1,4 +1,9 @@
+# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
 # SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2025 MASH project contributors
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -6,31 +11,19 @@
 # Project source code URL: https://github.com/knadh/listmonk
 
 listmonk_enabled: true
-listmonk_identifier: listmonk
 
-# The hostname at which listmonk is served.
-listmonk_hostname: ''
+listmonk_identifier: listmonk
+listmonk_base_path: "/{{ listmonk_identifier }}"
+listmonk_data_path: "{{ listmonk_base_path }}/data"
+
+# renovate: datasource=docker depName=listmonk/listmonk
+listmonk_version: 4.1.0
 
 listmonk_uid: ''
 listmonk_gid: ''
 
-listmonk_base_path: "/{{ listmonk_identifier }}"
-listmonk_data_path: "{{ listmonk_base_path }}/data"
-
-# List of systemd services that the listmonk systemd service depends on
-listmonk_systemd_required_services_list: "{{ listmonk_systemd_required_services_list_default + listmonk_systemd_required_services_list_auto + listmonk_systemd_required_services_list_custom }}"
-listmonk_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
-listmonk_systemd_required_services_list_auto: []
-listmonk_systemd_required_services_list_custom: []
-
-# List of systemd services that the listmonk systemd service wants
-listmonk_systemd_wanted_services_list: "{{ listmonk_systemd_wanted_services_list_default + listmonk_systemd_wanted_services_list_auto + listmonk_systemd_wanted_services_list_custom }}"
-listmonk_systemd_wanted_services_list_default: []
-listmonk_systemd_wanted_services_list_auto: []
-listmonk_systemd_wanted_services_list_custom: []
-
-# renovate: datasource=docker depName=listmonk/listmonk
-listmonk_version: 4.1.0
+# The hostname at which listmonk is served.
+listmonk_hostname: ''
 
 listmonk_container_image: "{{ listmonk_container_image_registry_prefix }}listmonk/listmonk:{{ listmonk_container_image_tag }}"
 listmonk_container_image_registry_prefix: "{{ listmonk_container_image_registry_prefix_upstream }}"
@@ -39,16 +32,16 @@ listmonk_container_image_registry_prefix_upstream_default: docker.io/
 listmonk_container_image_tag: "v{{ listmonk_version }}"
 listmonk_container_image_force_pull: "{{ listmonk_container_image.endswith(':latest') }}"
 
+# Controls whether the listmonk container exposes its HTTP port (as defined by `listmonk_container_http_port`).
+#
+# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:8731"), or empty string to not expose.
+listmonk_container_http_host_bind_port: ""
+
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 listmonk_container_network: '{{ listmonk_identifier }}'
 
 # The port number in the container
 listmonk_container_http_port: 9000
-
-# Controls whether the listmonk container exposes its HTTP port (as defined by `listmonk_container_http_port`).
-#
-# Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:8731"), or empty string to not expose.
-listmonk_container_http_host_bind_port: ""
 
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -56,24 +49,6 @@ listmonk_container_http_host_bind_port: ""
 listmonk_container_additional_networks: "{{ listmonk_container_additional_networks_auto + listmonk_container_additional_networks_custom }}"
 listmonk_container_additional_networks_auto: []
 listmonk_container_additional_networks_custom: []
-
-listmonk_database_host: ''
-listmonk_database_port: 5432
-listmonk_database_name: listmonk
-listmonk_database_username: listmonk
-listmonk_database_password: ''
-# Use this to set the sslmode parameter of the SSL connection
-# By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
-listmonk_database_sslmode: disable
-
-# Additional environment variables to pass to the listmonk container.
-# You can use this to further influence the default configuration.
-#
-# Example:
-# listmonk_environment_variables_additional_variables: |
-#   LISTMONK_ADMIN_USER=admin
-#   LISTMONK_ADMIN_PASSWORD=SUPERSECRETPASSWORD
-listmonk_environment_variables_additional_variables: ''
 
 # listmonk_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `../templates/labels.j2` for details.
@@ -105,6 +80,15 @@ listmonk_container_labels_traefik_additional_response_headers_auto: |
     | combine ({'Strict-Transport-Security': listmonk_http_header_strict_transport_security} if listmonk_http_header_strict_transport_security and listmonk_container_labels_traefik_tls else {})
   }}
 listmonk_container_labels_traefik_additional_response_headers_custom: {}
+
+# listmonk_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# See `../templates/labels.j2` for details.
+#
+# Example:
+# listmonk_container_labels_additional_labels: |
+#   my.label=1
+#   another.label="here"
+listmonk_container_labels_additional_labels: ''
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
@@ -153,11 +137,32 @@ listmonk_floc_optout_enabled: true
 # See: `listmonk_http_header_strict_transport_security`
 listmonk_hsts_preload_enabled: false
 
-# listmonk_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `../templates/labels.j2` for details.
+# List of systemd services that the listmonk systemd service depends on
+listmonk_systemd_required_services_list: "{{ listmonk_systemd_required_services_list_default + listmonk_systemd_required_services_list_auto + listmonk_systemd_required_services_list_custom }}"
+listmonk_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+listmonk_systemd_required_services_list_auto: []
+listmonk_systemd_required_services_list_custom: []
+
+# List of systemd services that the listmonk systemd service wants
+listmonk_systemd_wanted_services_list: "{{ listmonk_systemd_wanted_services_list_default + listmonk_systemd_wanted_services_list_auto + listmonk_systemd_wanted_services_list_custom }}"
+listmonk_systemd_wanted_services_list_default: []
+listmonk_systemd_wanted_services_list_auto: []
+listmonk_systemd_wanted_services_list_custom: []
+
+listmonk_database_host: ''
+listmonk_database_port: 5432
+listmonk_database_name: listmonk
+listmonk_database_username: listmonk
+listmonk_database_password: ''
+# Use this to set the sslmode parameter of the SSL connection
+# By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
+listmonk_database_sslmode: disable
+
+# Additional environment variables to pass to the listmonk container.
+# You can use this to further influence the default configuration.
 #
 # Example:
-# listmonk_container_labels_additional_labels: |
-#   my.label=1
-#   another.label="here"
-listmonk_container_labels_additional_labels: ''
+# listmonk_environment_variables_additional_variables: |
+#   LISTMONK_ADMIN_USER=admin
+#   LISTMONK_ADMIN_PASSWORD=SUPERSECRETPASSWORD
+listmonk_environment_variables_additional_variables: ''
