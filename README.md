@@ -21,7 +21,7 @@ To configure and install listmonk on your own server(s), you should use a playbo
 
 ```
 listmonk_enabled: true
-listmonk_hostname: 'example.org'
+listmonk_hostname: 'example.com'
 
 listmonk_db_host:
 
