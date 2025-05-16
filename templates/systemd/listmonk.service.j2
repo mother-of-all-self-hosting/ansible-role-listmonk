@@ -31,8 +31,8 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% if listmonk_container_http_host_bind_port %}
       -p {{ listmonk_container_http_host_bind_port }}:{{ listmonk_container_http_port }} \
       {% endif %}
-      --env-file={{ listmonk_env_path }} \
-      --label-file={{ listmonk_config_path }}/labels \
+      --env-file={{ listmonk_base_path }}/env \
+      --label-file={{ listmonk_base_path }}/labels \
       --mount type=bind,src={{ listmonk_data_path }},dst=/listmonk/uploads \
       {{ listmonk_container_image }} ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
 

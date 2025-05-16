@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
@@ -6,54 +7,50 @@
 
 - name: Ensure listmonk path exists
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     state: directory
     mode: 0700
     owner: "{{ listmonk_uid }}"
     group: "{{ listmonk_gid }}"
   with_items:
-    - {path: "{{ listmonk_base_path }}", when: true}
-    - {path: "{{ listmonk_config_path }}", when: true}
+    - "{{ listmonk_base_path }}"
 
 - name: Ensure listmonk data path exists
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     state: directory
     mode: 0755
     owner: "{{ listmonk_uid }}"
     group: "{{ listmonk_gid }}"
   with_items:
-    - {path: "{{ listmonk_data_path }}", when: true}
+    - "{{ listmonk_data_path }}"
 
-- name: Ensure listmonk traefik labels are installed
+- name: Ensure listmonk support files installed
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/labels.j2"
-    dest: "{{ listmonk_config_path }}/labels"
+    src: "{{ role_path }}/templates/{{ item }}.j2"
+    dest: "{{ listmonk_base_path }}/{{ item }}"
+    mode: 0640
     owner: "{{ listmonk_uid }}"
     group: "{{ listmonk_gid }}"
-    mode: 0640
-
-- name: Ensure listmonk configuration is deployed
-  ansible.builtin.template:
-    src: "{{ role_path }}/templates/env.j2"
-    dest: "{{ listmonk_config_path }}/env"
-    owner: "{{ listmonk_uid }}"
-    group: "{{ listmonk_gid }}"
-    mode: 0640
+  with_items:
+    - env
+    - labels
 
 - name: Ensure listmonk container image is pulled
   community.docker.docker_image:
     name: "{{ listmonk_container_image }}"
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
+    force_source: "{{ listmonk_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
+    force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else listmonk_container_image_force_pull }}"
 
-- name: Ensure listmonk network is created in Docker
+- name: Ensure listmonk container network is created
   community.docker.docker_network:
     enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
     name: "{{ listmonk_container_network }}"
     driver: bridge
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
 
-- name: Ensure listmonk.service installed
+- name: Ensure listmonk systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/listmonk.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"

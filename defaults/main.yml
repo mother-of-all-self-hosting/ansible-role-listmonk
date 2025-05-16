@@ -15,9 +15,7 @@ listmonk_uid: ''
 listmonk_gid: ''
 
 listmonk_base_path: "/{{ listmonk_identifier }}"
-listmonk_config_path: "{{ listmonk_base_path }}/config"
 listmonk_data_path: "{{ listmonk_base_path }}/data"
-listmonk_env_path: "{{ listmonk_config_path }}/env"
 
 # List of systemd services that the listmonk systemd service depends on
 listmonk_systemd_required_services_list: "{{ listmonk_systemd_required_services_list_default + listmonk_systemd_required_services_list_auto + listmonk_systemd_required_services_list_custom }}"
