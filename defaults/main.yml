@@ -63,7 +63,7 @@ listmonk_database_password: ''
 listmonk_database_sslmode: disable
 
 
-# Additional environment variables to pass to the Listmonk container.
+# Additional environment variables to pass to the listmonk container.
 # You can use this to further influence the default configuration.
 #
 # Example:

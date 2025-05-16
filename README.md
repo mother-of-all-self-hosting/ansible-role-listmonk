@@ -4,20 +4,20 @@ SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Listmonk Ansible Role
+# listmonk Ansible Role
 
-![Listmonk Logo](assets/listmonk.png)
+![listmonk Logo](assets/listmonk.png)
 
 
-Listmonk is a self-hosted newsletter and mailing list manager. This role helps you to set up Listmonk:
+listmonk is a self-hosted newsletter and mailing list manager. This role helps you to set up listmonk:
 
 - with everything run in [Docker](https://www.docker.com/) containers
-- powered by [the official Listmonk container image](https://hub.docker.com/r/listmonk/listmonk/)
+- powered by [the official listmonk container image](https://hub.docker.com/r/listmonk/listmonk/)
 
 
 ## Installing
 
-To configure and install Listmonk on your own server(s), you should use a playbook like [Mother of all self-hosting](https://github.com/mother-of-all-self-hosting/mash-playbook) or write your own.
+To configure and install listmonk on your own server(s), you should use a playbook like [Mother of all self-hosting](https://github.com/mother-of-all-self-hosting/mash-playbook) or write your own.
 
 # Configuring this role for your playbook
 
