@@ -8,12 +8,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 ![listmonk Logo](assets/listmonk.png)
 
-
 listmonk is a self-hosted newsletter and mailing list manager. This role helps you to set up listmonk:
 
 - with everything run in [Docker](https://www.docker.com/) containers
 - powered by [the official listmonk container image](https://hub.docker.com/r/listmonk/listmonk/)
-
 
 ## Installing
 
@@ -31,4 +29,3 @@ listmonk_db_name:
 listmonk_db_user:
 listmonk_db_password:
 ```
-

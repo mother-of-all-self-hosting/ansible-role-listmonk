@@ -4,6 +4,7 @@
 
 ---
 # Project source code URL: https://github.com/knadh/listmonk
+
 listmonk_enabled: true
 listmonk_identifier: listmonk
 
@@ -63,7 +64,6 @@ listmonk_database_password: ''
 # By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
 listmonk_database_sslmode: disable
 
-
 # Additional environment variables to pass to the listmonk container.
 # You can use this to further influence the default configuration.
 #
@@ -89,7 +89,6 @@ listmonk_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 listmonk_container_labels_traefik_additional_request_headers: "{{ listmonk_container_labels_traefik_additional_request_headers_auto | combine(listmonk_container_labels_traefik_additional_request_headers_custom) }}"
 listmonk_container_labels_traefik_additional_request_headers_auto: {}
 listmonk_container_labels_traefik_additional_request_headers_custom: {}
-
 
 # Controls which additional headers to attach to all HTTP responses.
 # To add your own custom response headers, use `listmonk_container_labels_traefik_additional_response_headers_custom`
@@ -151,7 +150,6 @@ listmonk_floc_optout_enabled: true
 # - https://hstspreload.org/#opt-in
 # See: `listmonk_http_header_strict_transport_security`
 listmonk_hsts_preload_enabled: false
-
 
 # listmonk_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `roles/custom/collabora_online/templates/labels.j2` for details.
