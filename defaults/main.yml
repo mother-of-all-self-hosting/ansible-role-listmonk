@@ -27,6 +27,7 @@ listmonk_systemd_wanted_services_list_default: []
 listmonk_systemd_wanted_services_list_auto: []
 listmonk_systemd_wanted_services_list_custom: []
 
+# renovate: datasource=docker depName=listmonk/listmonk
 listmonk_version: 4.1.0
 
 listmonk_container_image: "{{ listmonk_container_image_registry_prefix }}listmonk/listmonk:{{ listmonk_container_image_tag }}"
