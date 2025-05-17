@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 This is an [Ansible](https://www.ansible.com/) role which installs [listmonk](https://listmonk.app/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-listmonk is a free and open-source collaborative wiki and documentation software, designed for seamless real-time collaboration. It can be used to manage a wiki, a knowledge base, project documentation, etc. It has various functions such as granular permissions management system, page history to track changes of articles, etc. It also supports diagramming tools like Draw.io, Excalidraw and Mermaid.
+listmonk is a self-hosted, high performance one-way mailing list and newsletter manager.
 
 See the project's [documentation](https://listmonk.app/docs/) to learn what listmonk does and why it might be useful to you.
 
