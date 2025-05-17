@@ -23,11 +23,11 @@ To configure and install listmonk on your own server(s), you should use a playbo
 listmonk_enabled: true
 listmonk_hostname: 'example.com'
 
-listmonk_db_host:
-
-listmonk_db_name:
-listmonk_db_user:
-listmonk_db_password:
+listmonk_database_host:
+listmonk_database_port: 5432
+listmonk_database_name:
+listmonk_database_username:
+listmonk_database_password:
 ```
 
 💡 See this [document](docs/configuring-listmonk.md) for details about setting up the service with this role.
