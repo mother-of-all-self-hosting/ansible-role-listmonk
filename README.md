@@ -29,3 +29,5 @@ listmonk_db_name:
 listmonk_db_user:
 listmonk_db_password:
 ```
+
+💡 See this [document](docs/configuring-listmonk.md) for details about setting up the service with this role.
