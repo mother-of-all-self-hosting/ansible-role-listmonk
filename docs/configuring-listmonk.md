@@ -62,7 +62,7 @@ listmonk_hostname: "example.com"
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting listmonk under a subpath (by configuring the `listmonk_path_prefix` variable) does not seem to be possible due to listmonk's technical limitations.
+**Note**: hosting listmonk under a subpath does not seem to be possible due to listmonk's technical limitations.
 
 ### Set variables for connecting to a Redis server
 
