@@ -102,8 +102,6 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 After running the command for installation, listmonk becomes available at the specified hostname like `https://example.com`.
 
-To get started, go to the URL on a web browser and create a first workspace by inputting required information. For an email address, make sure to input your own email address, not the one specified to `listmonk_environment_variable_mail_from_address`.
-
 ## Troubleshooting
 
 ### Check the service's logs
