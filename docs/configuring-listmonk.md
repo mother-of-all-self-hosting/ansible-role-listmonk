@@ -64,21 +64,19 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 **Note**: hosting listmonk under a subpath does not seem to be possible due to listmonk's technical limitations.
 
-### Set variables for connecting to a Redis server
+### Set variables for connecting to a Postgres database server
 
-As described above, it is necessary to set up a [Redis](https://redis.io/) server for managing a metadata database of a listmonk instance. You can use either KeyDB or Valkey alternatively.
-
-Having configured it, you need to add and adjust the following configuration to your `vars.yml` file, so that the listmonk instance will connect to the server:
+To have the listmonk instance connect to your Postgres server, add the following configuration to your `vars.yml` file.
 
 ```yaml
-listmonk_redis_username: ''
-listmonk_redis_password: ''
-listmonk_redis_host: YOUR_REDIS_SERVER_HOSTNAME_HERE
-listmonk_redis_port: 6379
-listmonk_redis_dbnumber: ''
+listmonk_database_host: YOUR_POSTGRES_SERVER_HOSTNAME_HERE
+listmonk_database_port: 5432
+listmonk_database_name: YOUR_POSTGRES_SERVER_DATABASE_NAME_HERE
+listmonk_database_username: YOUR_POSTGRES_SERVER_USERNAME_HERE
+listmonk_database_password: YOUR_POSTGRES_SERVER_PASSWORD_HERE
 ```
 
-Make sure to replace `YOUR_REDIS_SERVER_HOSTNAME_HERE` with the hostname of your Redis server. If the Redis server runs on the same host as listmonk, set `localhost`.
+Make sure to replace values for variables with yours.
 
 ### Configure a storage backend
 
