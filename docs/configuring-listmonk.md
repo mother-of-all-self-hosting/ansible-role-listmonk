@@ -16,23 +16,23 @@ SPDX-FileCopyrightText: 2024 - 2025 Suguru Hirahara
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Setting up Docmost
+# Setting up listmonk
 
-This is an [Ansible](https://www.ansible.com/) role which installs [Docmost](https://docmost.com/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+This is an [Ansible](https://www.ansible.com/) role which installs [listmonk](https://docmost.com/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-Docmost is a free and open-source collaborative wiki and documentation software, designed for seamless real-time collaboration. It can be used to manage a wiki, a knowledge base, project documentation, etc. It has various functions such as granular permissions management system, page history to track changes of articles, etc. It also supports diagramming tools like Draw.io, Excalidraw and Mermaid.
+listmonk is a free and open-source collaborative wiki and documentation software, designed for seamless real-time collaboration. It can be used to manage a wiki, a knowledge base, project documentation, etc. It has various functions such as granular permissions management system, page history to track changes of articles, etc. It also supports diagramming tools like Draw.io, Excalidraw and Mermaid.
 
-See the project's [documentation](https://docmost.com/docs/) to learn what Docmost does and why it might be useful to you.
+See the project's [documentation](https://docmost.com/docs/) to learn what listmonk does and why it might be useful to you.
 
 ## Prerequisites
 
-To run a Docmost instance it is necessary to prepare a [Redis](https://redis.io/) server for managing a metadata database.
+To run a listmonk instance it is necessary to prepare a [Redis](https://redis.io/) server for managing a metadata database.
 
 If you are looking for an Ansible role for Redis, you can check out [this role (ansible-role-redis)](https://github.com/mother-of-all-self-hosting/ansible-role-redis) maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team. Note that the team recommends to have a look at [this role (ansible-role-valkey)](https://github.com/mother-of-all-self-hosting/ansible-role-valkey) for [Valkey](https://valkey.io/) instead.
 
 ## Adjusting the playbook configuration
 
-To enable Docmost with this role, add the following configuration to your `vars.yml` file.
+To enable listmonk with this role, add the following configuration to your `vars.yml` file.
 
 **Note**: the path should be something like `inventory/host_vars/mash.example.com/vars.yml` if you use the [MASH Ansible playbook](https://github.com/mother-of-all-self-hosting/mash-playbook).
 
@@ -54,7 +54,7 @@ docmost_enabled: true
 
 ### Set the hostname
 
-To enable the Docmost instance you need to set the hostname as well. To do so, add the following configuration to your `vars.yml` file. Make sure to replace `example.com` with your own value.
+To enable the listmonk instance you need to set the hostname as well. To do so, add the following configuration to your `vars.yml` file. Make sure to replace `example.com` with your own value.
 
 ```yaml
 docmost_hostname: "example.com"
@@ -62,13 +62,13 @@ docmost_hostname: "example.com"
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting Docmost under a subpath (by configuring the `docmost_path_prefix` variable) does not seem to be possible due to Docmost's technical limitations.
+**Note**: hosting listmonk under a subpath (by configuring the `docmost_path_prefix` variable) does not seem to be possible due to listmonk's technical limitations.
 
 ### Set variables for connecting to a Redis server
 
-As described above, it is necessary to set up a [Redis](https://redis.io/) server for managing a metadata database of a Docmost instance. You can use either KeyDB or Valkey alternatively.
+As described above, it is necessary to set up a [Redis](https://redis.io/) server for managing a metadata database of a listmonk instance. You can use either KeyDB or Valkey alternatively.
 
-Having configured it, you need to add and adjust the following configuration to your `vars.yml` file, so that the Docmost instance will connect to the server:
+Having configured it, you need to add and adjust the following configuration to your `vars.yml` file, so that the listmonk instance will connect to the server:
 
 ```yaml
 docmost_redis_username: ''
@@ -78,7 +78,7 @@ docmost_redis_port: 6379
 docmost_redis_dbnumber: ''
 ```
 
-Make sure to replace `YOUR_REDIS_SERVER_HOSTNAME_HERE` with the hostname of your Redis server. If the Redis server runs on the same host as Docmost, set `localhost`.
+Make sure to replace `YOUR_REDIS_SERVER_HOSTNAME_HERE` with the hostname of your Redis server. If the Redis server runs on the same host as listmonk, set `localhost`.
 
 ### Configure a storage backend
 
@@ -124,7 +124,7 @@ docmost_environment_variable_aws_s3_force_path_style: false
 
 ### Configure the mailer
 
-You can configure a mailer for functions such as user invitation. Docmost supports a SMTP server (default) and Postmark. To set it up, add the following common configuration and settings specific to SMTP server or Postmark to your `vars.yml` file as below (adapt to your needs):
+You can configure a mailer for functions such as user invitation. listmonk supports a SMTP server (default) and Postmark. To set it up, add the following common configuration and settings specific to SMTP server or Postmark to your `vars.yml` file as below (adapt to your needs):
 
 ```yaml
 docmost_mailer_enabled: true
@@ -181,7 +181,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `docmost_environment_variables_additional_variables` variable
 
-For a complete list of Docmost's config options that you could put in `docmost_environment_variables_additional_variables`, see its [environment variables](https://docmost.com/docs/self-hosting/environment-variables).
+For a complete list of listmonk's config options that you could put in `docmost_environment_variables_additional_variables`, see its [environment variables](https://docmost.com/docs/self-hosting/environment-variables).
 
 ## Installing
 
@@ -195,7 +195,7 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 ## Usage
 
-After running the command for installation, Docmost becomes available at the specified hostname like `https://example.com`.
+After running the command for installation, listmonk becomes available at the specified hostname like `https://example.com`.
 
 To get started, go to the URL on a web browser and create a first workspace by inputting required information. For an email address, make sure to input your own email address, not the one specified to `docmost_environment_variable_mail_from_address`.
 
