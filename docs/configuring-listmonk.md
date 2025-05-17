@@ -18,11 +18,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Setting up listmonk
 
-This is an [Ansible](https://www.ansible.com/) role which installs [listmonk](https://listmonk.com/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+This is an [Ansible](https://www.ansible.com/) role which installs [listmonk](https://listmonk.app/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
 listmonk is a free and open-source collaborative wiki and documentation software, designed for seamless real-time collaboration. It can be used to manage a wiki, a knowledge base, project documentation, etc. It has various functions such as granular permissions management system, page history to track changes of articles, etc. It also supports diagramming tools like Draw.io, Excalidraw and Mermaid.
 
-See the project's [documentation](https://listmonk.com/docs/) to learn what listmonk does and why it might be useful to you.
+See the project's [documentation](https://listmonk.app/docs/) to learn what listmonk does and why it might be useful to you.
 
 ## Prerequisites
 
@@ -181,7 +181,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `listmonk_environment_variables_additional_variables` variable
 
-For a complete list of listmonk's config options that you could put in `listmonk_environment_variables_additional_variables`, see its [environment variables](https://listmonk.com/docs/self-hosting/environment-variables).
+For a complete list of listmonk's config options that you could put in `listmonk_environment_variables_additional_variables`, see its [environment variables](https://listmonk.app/docs/self-hosting/environment-variables).
 
 ## Installing
 
