@@ -1,31 +1,20 @@
 <!--
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
+SPDX-FileCopyrightText: 2025 Suguru Hirahara
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# listmonk Ansible Role
+# listmonk Ansible role
 
-![listmonk Logo](assets/listmonk.png)
+This is an [Ansible](https://www.ansible.com/) role which installs [listmonk](https://listmonk.app/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-listmonk is a self-hosted newsletter and mailing list manager. This role helps you to set up listmonk:
+This role *implicitly* depends on:
 
-- with everything run in [Docker](https://www.docker.com/) containers
-- powered by [the official listmonk container image](https://hub.docker.com/r/listmonk/listmonk/)
+- [`com.devture.ansible.role.playbook_help`](https://github.com/devture/com.devture.ansible.role.playbook_help)
+- [`com.devture.ansible.role.systemd_docker_base`](https://github.com/devture/com.devture.ansible.role.systemd_docker_base)
 
-## Installing
+Check [defaults/main.yml](defaults/main.yml) for the full list of supported options.
 
-To configure and install listmonk on your own server(s), you should use a playbook like [Mother of all self-hosting](https://github.com/mother-of-all-self-hosting/mash-playbook) or write your own.
-
-# Configuring this role for your playbook
-
-```
-listmonk_enabled: true
-listmonk_hostname: 'example.com'
-
-listmonk_db_host:
-
-listmonk_db_name:
-listmonk_db_user:
-listmonk_db_password:
-```
+💡 See this [document](docs/configuring-listmonk.md) for details about setting up the service with this role.
