@@ -86,7 +86,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `listmonk_environment_variables_additional_variables` variable
 
-For a complete list of listmonk's config options that you could put in `listmonk_environment_variables_additional_variables`, see its [environment variables](https://listmonk.app/docs/self-hosting/environment-variables).
+For a complete list of listmonk's config options that you could put in `listmonk_environment_variables_additional_variables`, see its [environment variables](https://listmonk.app/docs/configuration/#environment-variables).
 
 ## Installing
 
