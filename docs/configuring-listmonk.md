@@ -26,9 +26,9 @@ See the project's [documentation](https://listmonk.app/docs/) to learn what list
 
 ## Prerequisites
 
-To run a listmonk instance it is necessary to prepare a [Redis](https://redis.io/) server for managing a metadata database.
+To run a listmonk instance it is necessary to prepare a [Postgres](https://www.postgresql.org) database server.
 
-If you are looking for an Ansible role for Redis, you can check out [this role (ansible-role-redis)](https://github.com/mother-of-all-self-hosting/ansible-role-redis) maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team. Note that the team recommends to have a look at [this role (ansible-role-valkey)](https://github.com/mother-of-all-self-hosting/ansible-role-valkey) for [Valkey](https://valkey.io/) instead.
+If you are looking for an Ansible role for it, you can check out [this role (ansible-role-postgres)](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
 
 ## Adjusting the playbook configuration
 
