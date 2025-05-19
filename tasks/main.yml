@@ -5,11 +5,14 @@
 
 ---
 
-- block:
-    - when: listmonk_enabled | bool
+- name: Perform listmonk installation tasks
+  block:
+    - name: Validate listmonk configuration
+      when: listmonk_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
 
-    - when: listmonk_enabled | bool
+    - name: Install listmonk
+      when: listmonk_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - setup-all
@@ -17,8 +20,10 @@
     - install-all
     - install-listmonk
 
-- block:
-    - when: not listmonk_enabled | bool
+- name: Perform listmonk uninstallation tasks
+  block:
+    - name: Uninstall listmonk
+      when: not listmonk_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
   tags:
     - setup-all
