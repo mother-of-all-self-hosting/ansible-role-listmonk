@@ -69,7 +69,7 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 To have the listmonk instance connect to your Postgres server, add the following configuration to your `vars.yml` file.
 
 ```yaml
-listmonk_database_host: YOUR_POSTGRES_SERVER_HOSTNAME_HERE
+listmonk_database_hostname: YOUR_POSTGRES_SERVER_HOSTNAME_HERE
 listmonk_database_port: 5432
 listmonk_database_name: YOUR_POSTGRES_SERVER_DATABASE_NAME_HERE
 listmonk_database_username: YOUR_POSTGRES_SERVER_USERNAME_HERE

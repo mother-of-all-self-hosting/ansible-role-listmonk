@@ -149,7 +149,7 @@ listmonk_systemd_wanted_services_list_default: []
 listmonk_systemd_wanted_services_list_auto: []
 listmonk_systemd_wanted_services_list_custom: []
 
-listmonk_database_host: ''
+listmonk_database_hostname: ''
 listmonk_database_port: 5432
 listmonk_database_name: listmonk
 listmonk_database_username: listmonk
