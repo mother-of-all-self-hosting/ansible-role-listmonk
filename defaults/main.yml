@@ -25,6 +25,8 @@ listmonk_gid: ''
 # The hostname at which listmonk is served.
 listmonk_hostname: ''
 
+listmonk_path_prefix: /
+
 listmonk_container_image: "{{ listmonk_container_image_registry_prefix }}listmonk/listmonk:{{ listmonk_container_image_tag }}"
 listmonk_container_image_registry_prefix: "{{ listmonk_container_image_registry_prefix_upstream }}"
 listmonk_container_image_registry_prefix_upstream: "{{ listmonk_container_image_registry_prefix_upstream_default }}"
@@ -54,10 +56,14 @@ listmonk_container_additional_networks_custom: []
 # See `../templates/labels.j2` for details.
 #
 # To inject your own other container labels, see `listmonk_container_labels_additional_labels`.
-listmonk_container_labels_traefik_enabled: false
-listmonk_container_labels_traefik_docker_network: ""
-listmonk_container_labels_traefik_entrypoints: web-secure
+listmonk_container_labels_traefik_enabled: true
+listmonk_container_labels_traefik_docker_network: "{{ listmonk_container_network }}"
+listmonk_container_labels_traefik_hostname: "{{ listmonk_hostname }}"
+# The path prefix must either be `/` or not end with a slash (e.g. `/listmonk`).
+listmonk_container_labels_traefik_path_prefix: "{{ listmonk_path_prefix }}"
+listmonk_container_labels_traefik_rule: "Host(`{{ listmonk_container_labels_traefik_hostname }}`){% if listmonk_container_labels_traefik_path_prefix != '/' %} && PathPrefix(`{{ listmonk_container_labels_traefik_path_prefix }}`){% endif %}"
 listmonk_container_labels_traefik_priority: 0
+listmonk_container_labels_traefik_entrypoints: web-secure
 listmonk_container_labels_traefik_tls: "{{ listmonk_container_labels_traefik_entrypoints != 'web' }}"
 listmonk_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
