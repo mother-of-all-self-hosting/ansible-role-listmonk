@@ -82,7 +82,7 @@ listmonk_container_labels_traefik_additional_response_headers_auto: |
     | combine ({'X-XSS-Protection': listmonk_http_header_xss_protection} if listmonk_http_header_xss_protection else {})
     | combine ({'X-Content-Type-Options': listmonk_http_header_content_type_options} if listmonk_http_header_content_type_options else {})
     | combine ({'Content-Security-Policy': listmonk_http_header_content_security_policy} if listmonk_http_header_content_security_policy else {})
-    | combine ({'Permission-Policy': listmonk_http_header_content_permission_policy} if listmonk_http_header_content_permission_policy else {})
+    | combine ({'Permissions-Policy': listmonk_http_header_permissions_policy} if listmonk_http_header_permissions_policy else {})
     | combine ({'Strict-Transport-Security': listmonk_http_header_strict_transport_security} if listmonk_http_header_strict_transport_security and listmonk_container_labels_traefik_tls else {})
   }}
 listmonk_container_labels_traefik_additional_response_headers_custom: {}
@@ -112,9 +112,9 @@ listmonk_http_header_content_type_options: nosniff
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 listmonk_http_header_content_security_policy: frame-ancestors 'self'
 
-# Specifies the value of the `Permission-Policy` header.
-# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permission-Policy
-listmonk_http_header_content_permission_policy: "{{ 'interest-cohort=()' if listmonk_floc_optout_enabled else '' }}"
+# Specifies the value of the `Permissions-Policy` header.
+# See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+listmonk_http_header_permissions_policy: "{{ 'interest-cohort=()' if listmonk_floc_optout_enabled else '' }}"
 
 # Specifies the value of the `Strict-Transport-Security` header.
 # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
@@ -128,7 +128,7 @@ listmonk_http_header_strict_transport_security: "max-age=31536000; includeSubDom
 # - https://amifloced.org/
 #
 # Of course, a better solution is to just stop using browsers (like Chrome), which participate in such tracking practices.
-# See: `listmonk_content_permission_policy`
+# See: `listmonk_http_header_permissions_policy`
 listmonk_floc_optout_enabled: true
 
 # Controls if HSTS preloading is enabled
