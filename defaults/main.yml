@@ -19,11 +19,11 @@ listmonk_data_path: "{{ listmonk_base_path }}/data"
 # renovate: datasource=docker depName=listmonk/listmonk
 listmonk_version: 4.1.0
 
-listmonk_uid: ''
-listmonk_gid: ''
+listmonk_uid: ""
+listmonk_gid: ""
 
 # The hostname at which listmonk is served.
-listmonk_hostname: ''
+listmonk_hostname: ""
 
 listmonk_path_prefix: /
 
@@ -94,7 +94,7 @@ listmonk_container_labels_traefik_additional_response_headers_custom: {}
 # listmonk_container_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-listmonk_container_labels_additional_labels: ''
+listmonk_container_labels_additional_labels: ""
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
@@ -155,11 +155,11 @@ listmonk_systemd_wanted_services_list_default: []
 listmonk_systemd_wanted_services_list_auto: []
 listmonk_systemd_wanted_services_list_custom: []
 
-listmonk_database_hostname: ''
+listmonk_database_hostname: ""
 listmonk_database_port: 5432
 listmonk_database_name: listmonk
 listmonk_database_username: listmonk
-listmonk_database_password: ''
+listmonk_database_password: ""
 # Use this to set the sslmode parameter of the SSL connection
 # By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
 listmonk_database_sslmode: disable
@@ -171,4 +171,4 @@ listmonk_database_sslmode: disable
 # listmonk_environment_variables_additional_variables: |
 #   LISTMONK_ADMIN_USER=admin
 #   LISTMONK_ADMIN_PASSWORD=SUPERSECRETPASSWORD
-listmonk_environment_variables_additional_variables: ''
+listmonk_environment_variables_additional_variables: ""
