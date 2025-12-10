@@ -17,7 +17,7 @@ listmonk_base_path: "/{{ listmonk_identifier }}"
 listmonk_data_path: "{{ listmonk_base_path }}/data"
 
 # renovate: datasource=docker depName=listmonk/listmonk
-listmonk_version: 4.1.0
+listmonk_version: 5.1.0
 
 listmonk_uid: ""
 listmonk_gid: ""
