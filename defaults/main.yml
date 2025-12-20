@@ -164,6 +164,9 @@ listmonk_database_password: ""
 # By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
 listmonk_database_sslmode: disable
 
+# Specify the timezone
+listmonk_environment_variables_tz: UTC
+
 # Additional environment variables to pass to the listmonk container.
 # You can use this to further influence the default configuration.
 #
