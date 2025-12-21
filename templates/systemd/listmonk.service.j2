@@ -34,6 +34,9 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --env-file={{ listmonk_base_path }}/env \
       --label-file={{ listmonk_base_path }}/labels \
       --mount type=bind,src={{ listmonk_data_path }},dst=/listmonk/uploads \
+      {% for arg in listmonk_container_extra_arguments %}
+      {{ arg }} \
+      {% endfor %}
       {{ listmonk_container_image }} ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
 
 {% for network in listmonk_container_additional_networks %}
