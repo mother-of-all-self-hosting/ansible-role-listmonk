@@ -56,4 +56,6 @@ traefik.http.routers.{{ listmonk_identifier }}.tls.certResolver={{ listmonk_cont
 traefik.http.services.{{ listmonk_identifier }}.loadbalancer.server.port={{ listmonk_container_http_port }}
 {% endif %}
 
-{{ listmonk_container_labels_additional_labels }}
+{% for arg in listmonk_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}
