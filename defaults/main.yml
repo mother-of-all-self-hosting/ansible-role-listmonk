@@ -92,7 +92,7 @@ listmonk_container_labels_traefik_additional_response_headers_custom: {}
 # To add your own custom labels, use `listmonk_container_labels_additional_labels_custom`
 #
 # Example:
-# listmonk_container_labels_additional_labels_custom: |
+# listmonk_container_labels_additional_labels_custom:
 #   - my.label=1
 #   - another.label="here"
 listmonk_container_labels_additional_labels: "{{ listmonk_container_labels_additional_labels_auto + listmonk_container_labels_additional_labels_custom }}"
