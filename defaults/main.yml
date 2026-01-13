@@ -55,7 +55,7 @@ listmonk_container_additional_networks_custom: []
 # listmonk_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `../templates/labels.j2` for details.
 #
-# To inject your own other container labels, see `listmonk_container_labels_additional_labels`.
+# To inject your own other container labels, see `listmonk_container_labels_additional_labels_custom`.
 listmonk_container_labels_traefik_enabled: true
 listmonk_container_labels_traefik_docker_network: "{{ listmonk_container_network }}"
 listmonk_container_labels_traefik_hostname: "{{ listmonk_hostname }}"
