@@ -36,13 +36,13 @@ listmonk_container_image_registry_prefix_upstream_default: docker.io/
 listmonk_container_image_tag: "v{{ listmonk_version }}"
 listmonk_container_image_force_pull: "{{ listmonk_container_image.endswith(':latest') }}"
 
+# The base container network. It will be auto-created by this role if it doesn't exist already.
+listmonk_container_network: "{{ listmonk_identifier }}"
+
 # Controls whether the container exposes its HTTP port (tcp/9000 in the container).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
 listmonk_container_http_host_bind_port: ""
-
-# The base container network. It will be auto-created by this role if it doesn't exist already.
-listmonk_container_network: "{{ listmonk_identifier }}"
 
 # The port number in the container
 listmonk_container_http_port: 9000
