@@ -30,6 +30,7 @@
       community.docker.docker_network:
         name: "{{ listmonk_container_network }}"
         state: absent
+      register: listmonk_network_deletion_result
 
     - name: Ensure listmonk container network does not exist via ansible.builtin.command
       when: devture_systemd_docker_base_container_network_creation_method == 'command'
@@ -37,8 +38,8 @@
         cmd: >-
           {{ devture_systemd_docker_base_host_command_docker }} network rm
           {{ listmonk_container_network }}
-      register: network_deletion_result
-      changed_when: listmonk_container_network in network_deletion_result.stdout
+      register: listmonk_network_deletion_result
+      changed_when: listmonk_container_network in listmonk_network_deletion_result.stdout
 
     - name: Ensure listmonk path does not exist
       ansible.builtin.file:
