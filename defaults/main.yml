@@ -219,3 +219,13 @@ listmonk_environment_variables_tz: UTC
 #   LISTMONK_ADMIN_USER=admin
 #   LISTMONK_ADMIN_PASSWORD=SUPERSECRETPASSWORD
 listmonk_environment_variables_additional_variables: ""
+
+# listmonk_restart_necessary controls whether the listmonk systemd
+# service will be restarted (when true) or merely started (when false) by the
+# systemd service manager role (when conditional restart is enabled).
+#
+# This value is automatically computed during installation based on whether
+# any configuration files, the systemd service file, or the container image changed.
+# The default of `false` means "no restart needed" — appropriate when the role's
+# installation tasks haven't run (e.g., due to --tags skipping them).
+listmonk_restart_necessary: false

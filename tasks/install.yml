@@ -35,6 +35,7 @@
   with_items:
     - env
     - labels
+  register: listmonk_support_files_result
 
 - name: Ensure listmonk container image is pulled via community.docker.docker_image
   when: devture_systemd_docker_base_container_image_pull_method == 'ansible-module'
@@ -84,3 +85,13 @@
     src: "{{ role_path }}/templates/systemd/listmonk.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"
     mode: 0644
+  register: listmonk_systemd_service_result
+
+- name: Determine whether listmonk needs a restart
+  ansible.builtin.set_fact:
+    listmonk_restart_necessary: >-
+      {{
+        listmonk_support_files_result.changed | default(false)
+        or listmonk_systemd_service_result.changed | default(false)
+        or listmonk_container_image_pull_result.changed | default(false)
+      }}
