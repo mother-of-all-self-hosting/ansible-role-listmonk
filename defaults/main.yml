@@ -199,14 +199,16 @@ listmonk_container_cleanup_command: |
   echo "Failed to remove stale container {{ listmonk_identifier }} after {{ listmonk_container_cleanup_timeout_seconds }} attempts" >&2;
   exit 1
 
+# Specify database configuration
 listmonk_database_hostname: ""
 listmonk_database_port: 5432
-listmonk_database_name: listmonk
 listmonk_database_username: listmonk
 listmonk_database_password: ""
-# Use this to set the sslmode parameter of the SSL connection
+# Specify SSL mode for Postgres database server
 # By default, we expect a local container (without SSL), so attempting SSL connections is not necessary.
+# Valid values: see https://www.postgresql.org/docs/11/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS
 listmonk_database_sslmode: disable
+listmonk_database_name: listmonk
 
 # Specify the timezone
 listmonk_environment_variables_tz: UTC
