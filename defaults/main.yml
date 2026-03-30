@@ -109,6 +109,13 @@ listmonk_container_extra_arguments: "{{ listmonk_container_extra_arguments_auto 
 listmonk_container_extra_arguments_auto: []
 listmonk_container_extra_arguments_custom: []
 
+# A list of extra arguments to pass to the listmonk process
+# Example: ['--SOME_ARGUMENT']
+listmonk_process_extra_arguments: "{{ listmonk_process_extra_arguments_auto + listmonk_process_extra_arguments_custom }}"
+listmonk_process_extra_arguments_auto: []
+listmonk_process_extra_arguments_custom:
+  - ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
+
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 #

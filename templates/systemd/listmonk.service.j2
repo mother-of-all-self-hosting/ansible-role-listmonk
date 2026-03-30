@@ -26,6 +26,10 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --log-driver=none \
       --user={{ listmonk_uid }}:{{ listmonk_gid }} \
       --cap-drop=ALL \
+      --cap-add=CAP_DAC_OVERRIDE \
+      --cap-add=CHOWN \
+      --cap-add=SETGID \
+      --cap-add=SETUID \
       --network={{ listmonk_container_network }} \
       {% if listmonk_container_http_host_bind_port %}
       -p {{ listmonk_container_http_host_bind_port }}:{{ listmonk_container_http_port }} \
@@ -36,7 +40,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% for arg in listmonk_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
-      {{ listmonk_container_image }} ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
+      {{ listmonk_container_image }} {{ listmonk_process_extra_arguments | join(' ') }}
 
 {% for network in listmonk_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ listmonk_identifier }}
