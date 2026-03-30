@@ -1,9 +1,9 @@
-# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
-# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023, 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
 # SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
 # SPDX-FileCopyrightText: 2025 MASH project contributors
-# SPDX-FileCopyrightText: 2025 Suguru Hirahara
+# SPDX-FileCopyrightText: 2025, 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -206,6 +206,12 @@ listmonk_container_cleanup_command: |
   echo "Failed to remove stale container {{ listmonk_identifier }} after {{ listmonk_container_cleanup_timeout_seconds }} attempts" >&2;
   exit 1
 
+########################################################################
+#                                                                      #
+# database                                                             #
+#                                                                      #
+########################################################################
+
 # Specify database configuration
 listmonk_database_hostname: ""
 listmonk_database_port: 5432
@@ -216,6 +222,23 @@ listmonk_database_password: ""
 # Valid values: see https://www.postgresql.org/docs/11/libpq-ssl.html#LIBPQ-SSL-SSLMODE-STATEMENTS
 listmonk_database_sslmode: disable
 listmonk_database_name: listmonk
+
+# Control if the connection to Postgres is made via a Unix socket
+listmonk_database_socket_enabled: true
+
+# Specify the path to the Postgres Unix socket path on the host (bind-mount source)
+listmonk_database_socket_path_host: ""
+
+# Specify the path to the Postgres Unix socket path inside the listmonk server container
+listmonk_database_socket_path_container: /run-postgres
+
+listmonk_environment_variables_listmonk_db_host: "{{ listmonk_database_socket_path_container if listmonk_database_socket_enabled else listmonk_database_hostname }}"
+
+########################################################################
+#                                                                      #
+# /database                                                            #
+#                                                                      #
+########################################################################
 
 # Specify the timezone
 listmonk_environment_variables_tz: UTC

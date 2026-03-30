@@ -1,5 +1,7 @@
-# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
-# SPDX-FileCopyrightText: 2025 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2023 MASH project contributors
+# SPDX-FileCopyrightText: 2023, 2025 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025, 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -19,14 +21,16 @@
   ansible.builtin.fail:
     msg: >-
       You need to define a required configuration setting (`{{ item }}`).
-  when: "lookup('vars', item, default='') | string | length == 0"
+  when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
-    - listmonk_identifier
-    - listmonk_uid
-    - listmonk_gid
-    - listmonk_hostname
-    - listmonk_path_prefix
-    - listmonk_container_network
+    - { "name": "listmonk_uid", when: true }
+    - { "name": "listmonk_gid", when: true }
+    - { "name": "listmonk_hostname", when: true }
+    - { "name": "listmonk_path_prefix", when: true }
+    - { "name": "listmonk_container_network", when: true }
+    - { "name": "listmonk_database_socket_path_host", when: "{{ listmonk_database_socket_enabled }}" }
+    - { "name": "listmonk_database_hostname", when: "{{ not listmonk_database_socket_enabled }}" }
+    - { "name": "listmonk_database_password", when: true }
 
 - name: Run if Traefik is enabled
   when: listmonk_container_labels_traefik_enabled | bool
