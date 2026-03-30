@@ -4,12 +4,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure listmonk path exists
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ listmonk_uid }}"
     group: "{{ listmonk_gid }}"
   with_items:
@@ -19,7 +18,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: "{{ listmonk_uid }}"
     group: "{{ listmonk_gid }}"
   with_items:
@@ -29,7 +28,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/{{ item }}.j2"
     dest: "{{ listmonk_base_path }}/{{ item }}"
-    mode: 0640
+    mode: "0640"
     owner: "{{ listmonk_uid }}"
     group: "{{ listmonk_gid }}"
   with_items:
@@ -84,7 +83,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/listmonk.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ listmonk_identifier }}.service"
-    mode: 0644
+    mode: "0644"
   register: listmonk_systemd_service_result
 
 - name: Determine whether listmonk needs a restart
