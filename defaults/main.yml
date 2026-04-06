@@ -229,7 +229,7 @@ listmonk_database_socket_enabled: true
 # Specify the path to the Postgres Unix socket path on the host (bind-mount source)
 listmonk_database_socket_path_host: ""
 
-# Specify the path to the Postgres Unix socket path inside the listmonk server container
+# Specify the path to the Postgres Unix socket path inside the listmonk container
 listmonk_database_socket_path_container: /run-postgres
 
 listmonk_environment_variables_listmonk_db_host: "{{ listmonk_database_socket_path_container if listmonk_database_socket_enabled else listmonk_database_hostname }}"
