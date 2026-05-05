@@ -16,6 +16,7 @@
     - { "old": "listmonk_database_host", "new": "listmonk_database_hostname" }
     - { "old": "listmonk_environment_variables_extension", "new": "listmonk_environment_variables_additional_variables" }
     - { "old": "listmonk_http_header_content_permission_policy", "new": "listmonk_http_header_permissions_policy" }
+    - { "old": "listmonk_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
 
 - name: Fail if required listmonk settings not defined
   ansible.builtin.fail:
