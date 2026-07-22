@@ -19,8 +19,9 @@ listmonk_data_path: "{{ listmonk_base_path }}/data"
 # renovate: datasource=docker depName=listmonk/listmonk
 listmonk_version: 6.2.0
 
-listmonk_uid: ""
-listmonk_gid: ""
+# Runs as root
+listmonk_uid: "0"
+listmonk_gid: "0"
 
 # The hostname at which listmonk is served.
 listmonk_hostname: ""
@@ -116,7 +117,7 @@ listmonk_container_extra_arguments_custom: []
 listmonk_process_extra_arguments: "{{ listmonk_process_extra_arguments_auto + listmonk_process_extra_arguments_custom }}"
 listmonk_process_extra_arguments_auto: []
 listmonk_process_extra_arguments_custom:
-  - ./listmonk --idempotent --yes --config '' && ./listmonk --config ''
+  - sh -c "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config ''"
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
