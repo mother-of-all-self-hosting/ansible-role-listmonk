@@ -1,0 +1,53 @@
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
+# SPDX-FileCopyrightText: 2026 spatterlight
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+- name: Verify listmonk systemd service
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Wait for listmonk service to become active (up to 180s)
+      ansible.builtin.systemd:
+        name: listmonk.service
+      register: listmonk_service
+      until: listmonk_service.status.ActiveState == 'active'
+      retries: 36
+      delay: 5
+
+    - name: Assert listmonk service is active
+      ansible.builtin.assert:
+        that: listmonk_service.status.ActiveState == 'active'
+        fail_msg: "listmonk.service not active ({{ listmonk_service.status.ActiveState }})"
+        success_msg: "listmonk.service is active"
+
+    - name: Retrieve listmonk service log for debugging
+      when: listmonk_debug_service_enabled | bool
+      ansible.builtin.command:
+        cmd: journalctl -xeu listmonk.service
+      changed_when: false
+
+    - name: Wait for listmonk HTTP endpoint to respond (up to 10m)
+      ansible.builtin.uri:
+        url: "http://localhost:9000/"
+        method: GET
+        status_code: [200, 302]
+        follow_redirects: none
+      register: listmonk_endpoint
+      until: listmonk_endpoint.status in [200, 302]
+      retries: 120
+      delay: 5
+
+    - name: Assert listmonk HTTP endpoint responds
+      ansible.builtin.assert:
+        that: listmonk_endpoint.status in [200, 302]
+        fail_msg: "listmonk did not respond as expected ({{ listmonk_endpoint.status | default('no response') }})"
+        success_msg: "listmonk responded with {{ listmonk_endpoint.status }}"
+
+    - name: Show listmonk systemd service status summary
+      ansible.builtin.debug:
+        msg:
+          - "listmonk systemd: {{ listmonk_service.status.ActiveState }}"
+          - "listmonk HTTP: {{ listmonk_endpoint.status }}"
