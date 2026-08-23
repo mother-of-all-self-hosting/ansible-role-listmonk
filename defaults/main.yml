@@ -16,7 +16,7 @@ listmonk_identifier: listmonk
 listmonk_base_path: "/{{ listmonk_identifier }}"
 listmonk_data_path: "{{ listmonk_base_path }}/data"
 
-# renovate: datasource=docker depName=listmonk/listmonk
+# renovate: datasource=docker depName=listmonk/listmonk versioning=semver
 listmonk_version: 6.2.0
 
 # Runs as root
