@@ -101,6 +101,24 @@ listmonk_database_hostname: YOUR_POSTGRES_SERVER_HOSTNAME_HERE
 listmonk_database_port: 5432
 ```
 
+### Creating the administrator account
+
+listmonk sets its database up on its first start, and how it does so decides who ends up owning your instance.
+
+If you tell it about an administrator, it creates that account during the install and nobody else can claim it:
+
+```yaml
+listmonk_environment_variables_additional_variables: |
+  LISTMONK_ADMIN_USER=YOUR_ADMIN_USERNAME_HERE
+  LISTMONK_ADMIN_PASSWORD=YOUR_ADMIN_PASSWORD_HERE
+```
+
+The password must be at least 8 characters long.
+
+If you do not, listmonk logs `no superadmin user created. Visit webpage to create user.` and serves a first-run form at `/admin/login` inviting whoever arrives to pick a username and password for the Super Admin account. Since this role publishes listmonk on a public hostname, that is a race with the internet, so setting the two variables above before the first installation is strongly recommended.
+
+The variables only matter for the install. Once the account exists, listmonk manages users in its own database and you can remove them (or change the password from within listmonk's own interface).
+
 ### Extending the configuration
 
 There are some additional things you may wish to configure about the service.
