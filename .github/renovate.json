@@ -1,6 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Patch releases of listmonk are automerged here, which is worth spelling out because the role's container command runs `./listmonk --upgrade --yes` on every start. A bumped image therefore rewrites the schema of the operator's database unattended and forward-only - the same shape of risk that keeps automerge off in other roles of this fleet.",
+    "It is safe for the patch class specifically, because listmonk registers migrations per minor release and never per patch. internal/migrations holds one file per `vX.Y.0` (v0.4.0 through v6.2.0), and not one of listmonk's patch releases - v2.5.1, v4.0.1, v5.0.1, v5.0.2, v5.0.3 - has a migration of its own. Measured rather than assumed: installing v5.0.0's schema and then starting the v5.0.3 image logs `skipping install as database appears to be already setup` and `no upgrades to run. Database is up to date.`, while the same experiment across a minor (v6.1.0 schema, v6.2.0 image) logs `running migration v6.2.0`. The class that migrates is minor and major, and those remain human-reviewed pull requests.",
+    "The automerge branch is covered by the Molecule run, which does more than watch the unit turn active: it lets listmonk install and upgrade its own schema, logs in as the admin, creates a list and a subscriber over the API, reads them back, cross-checks the rows in Postgres, and asserts the running process reports the version the role pins. A patch bump that broke startup, the schema or the API fails there before it can merge.",
+    "`versioning=semver` on the annotation in defaults/main.yml is what keeps the noise out of that decision. Of the 116 tags listmonk/listmonk publishes, strict semver leaves exactly the 21 real vX.Y.Z releases: the per-architecture flavours (v6.2.0-amd64, -arm64v8, -armv6, -armv7) parse as prereleases and are skipped as unstable, and `latest`, `nightly` and the old floating `v3-rc-*` majors are not versions at all. Before that annotation was pinned to semver, Renovate did once follow the floating `v6` tag."
+  ],
   "extends": [
-    "github>mother-of-all-self-hosting/renovate-config#v1.0.0"
+    "github>mother-of-all-self-hosting/renovate-config#v1.0.0",
+    "github>mother-of-all-self-hosting/renovate-config//patch-automerge#v1.0.0"
   ]
 }
