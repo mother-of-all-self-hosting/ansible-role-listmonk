@@ -47,7 +47,21 @@ Currently there is one testing scenario available.
 
 ### `default`
 
-Tests a standard listmonk installation.
+Tests a standard listmonk installation, against a Postgres installed by [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) and reached over a Unix socket.
+
+The verification does not stop at "the systemd service is active". It:
+
+- establishes, before anything else, that the stock listmonk image cannot start without what the role configures, and that a listmonk given everything *except* the role's `--install` step refuses to serve ("the database does not appear to be setup")
+- waits for listmonk's own public page rather than for the unit
+- checks that anonymous calls, forged sessions and wrong passwords are all refused
+- logs in as an administrator that exists only because `listmonk_environment_variables_additional_variables` reached the container
+- asserts the running process reports the version `listmonk_version` pins
+- creates a list and a subscriber over the admin API, reads them back, and cross-checks the row in Postgres
+- watches the service for long enough to catch a crash loop hiding behind `active`
+
+The scenario deliberately runs listmonk on a port and against a database name that are not its defaults, so that a configuration file which never reached the process would show up as a failure rather than as a pass.
+
+listmonk's SMTP settings are not part of this role - listmonk keeps them in its database, seeded during `--install` - so the scenario does not attempt a mail delivery probe. It would be testing listmonk's own defaults rather than the role.
 
 ## Running
 

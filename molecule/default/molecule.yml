@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2026 spatterlight
 # SPDX-FileCopyrightText: 2026 Suguru Hirahara
 #
@@ -31,24 +32,67 @@ provisioner:
         # Helper variables
         listmonk_debug_service_enabled: false
 
+        # The container and network names the role derives from its identifier.
+        # Role defaults are not in scope in a verify play, so they are spelled out.
+        listmonk_molecule_container: listmonk
+        listmonk_molecule_network: listmonk
+
+        # The Postgres coordinates the verification queries directly. The role's
+        # own database user is not a superuser, so the checks go in as the one
+        # ansible-role-postgres creates.
+        listmonk_molecule_postgres_container: postgres
+        listmonk_molecule_postgres_superuser: root
+
+        # A second, empty database, used by the negative control only. listmonk
+        # is pointed at it with everything else the role configures left in place,
+        # which isolates the one thing the role does that the image cannot do for
+        # itself: run `--install` to create the schema.
+        listmonk_molecule_control_database: listmonk_molecule_control
+
+        # listmonk creates this account during its first (idempotent) install,
+        # from environment variables the role passes through verbatim. The
+        # verification logs in with it, which is how the pass-through is checked.
+        listmonk_molecule_admin_username: molecule-admin
+        listmonk_molecule_admin_password: molecule-admin-password
+
         # Variables for listmonk
         listmonk_uid: "0"
         listmonk_gid: "0"
-        listmonk_scheme: http
         listmonk_hostname: localhost
         listmonk_container_labels_traefik_enabled: false
-        listmonk_container_http_host_bind_port: 9000
+
+        # Deliberately not listmonk's own default of 9000. The port reaches the
+        # process only through `LISTMONK_app__address` in the rendered env file,
+        # so a listmonk answering on this one is evidence that the file arrived.
+        listmonk_container_http_port: 9123
+        listmonk_container_http_host_bind_port: 127.0.0.1:9123
+
+        # The role writes nothing at all about SMTP: listmonk keeps its mail
+        # settings in the database (the `settings` table, under `app.smtp`),
+        # seeded from its own defaults during `--install`. A delivery probe
+        # against a local mail sink would therefore be exercising listmonk's
+        # built-in settings rather than anything this role does, so the scenario
+        # does not attempt one. Should the role ever grow SMTP variables of its
+        # own, that reasoning stops holding.
+
+        # Passed through to the container verbatim. listmonk turns these two into
+        # a superadmin on its first install; nothing else in the role knows about
+        # them, which makes a successful login proof that the pass-through works.
+        listmonk_environment_variables_additional_variables: |
+          LISTMONK_ADMIN_USER={{ listmonk_molecule_admin_username }}
+          LISTMONK_ADMIN_PASSWORD={{ listmonk_molecule_admin_password }}
 
         # Variables required for listmonk to connect to the Postgres database (via Unix socket)
         listmonk_database_username: my_database_username
         listmonk_database_password: my_database_password
-        listmonk_database_name: listmonk
+        # Deliberately not the role's default of `listmonk`, for the same reason
+        # as the port above: the verification looks for listmonk's schema in
+        # exactly this database, and only `LISTMONK_db__database` can point it there.
+        listmonk_database_name: listmonk_molecule
         listmonk_database_socket_enabled: true
         listmonk_database_socket_path_host: "{{ postgres_run_path }}"
-        listmonk_systemd_required_services_list_auto: |
-          {{
-            (['postgres.service'])
-          }}
+        listmonk_systemd_required_services_list_auto:
+          - postgres.service
 
         # Variables for Postgres
         postgres_uid: 1000
@@ -59,6 +103,10 @@ provisioner:
           {{
             [{
               'name': listmonk_database_name,
+              'username': listmonk_database_username,
+              'password': listmonk_database_password,
+            }, {
+              'name': listmonk_molecule_control_database,
               'username': listmonk_database_username,
               'password': listmonk_database_password,
             }]
