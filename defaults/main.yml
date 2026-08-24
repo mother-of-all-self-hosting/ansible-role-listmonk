@@ -114,10 +114,27 @@ listmonk_container_extra_arguments_custom: []
 
 # A list of extra arguments to pass to the listmonk process
 # Example: ['--SOME_ARGUMENT']
+#
+# The `_auto` part carries the command that makes a listmonk container usable at all.
+# listmonk refuses to start against a database it has not set up itself
+# ("the database does not appear to be setup. Run --install."), so every start
+# seeds the schema and then brings it up to date before serving:
+#
+# - `--install --idempotent --yes` creates the schema, and says
+#   "skipping install as database appears to be already setup" when it is already there
+# - `--upgrade --yes` runs whichever migrations the image is newer than
+# - the last invocation is the server itself
+#
+# Both bootstrap steps are idempotent, which is what lets them run on every start
+# rather than being driven from the playbook.
+#
+# This belongs in `_auto` and not in `_custom`: it is the role's doing, not the
+# operator's. Adding an argument of your own via `_custom` extends this command,
+# it does not replace it.
 listmonk_process_extra_arguments: "{{ listmonk_process_extra_arguments_auto + listmonk_process_extra_arguments_custom }}"
-listmonk_process_extra_arguments_auto: []
-listmonk_process_extra_arguments_custom:
+listmonk_process_extra_arguments_auto:
   - sh -c "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config ''"
+listmonk_process_extra_arguments_custom: []
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
