@@ -7,7 +7,7 @@
     "`versioning=semver` on the annotation in defaults/main.yml is what keeps the noise out of that decision. Of the 116 tags listmonk/listmonk publishes, strict semver leaves exactly the 21 real vX.Y.Z releases: the per-architecture flavours (v6.2.0-amd64, -arm64v8, -armv6, -armv7) parse as prereleases and are skipped as unstable, and `latest`, `nightly` and the old floating `v3-rc-*` majors are not versions at all. Before that annotation was pinned to semver, Renovate did once follow the floating `v6` tag."
   ],
   "extends": [
-    "github>mother-of-all-self-hosting/renovate-config#v1.0.0",
-    "github>mother-of-all-self-hosting/renovate-config//patch-automerge#v1.0.0"
+    "github>mother-of-all-self-hosting/renovate-config#v1.1.0",
+    "github>mother-of-all-self-hosting/renovate-config//patch-automerge#v1.1.0"
   ]
 }
