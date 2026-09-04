@@ -38,11 +38,10 @@
     listmonk_verify_absent_email: molecule-never-created@example.com
 
   tasks:
-    # Role defaults are not in scope in a verify play, but the version Renovate
-    # bumps lives in them and is what the running container is checked against
-    # below. Only leaf literals may be read out of this - anything Jinja-derived
-    # would be resolved against an empty namespace.
-    - name: Load the listmonk role defaults
+    # The role is not included in this playbook, so its defaults are not in
+    # scope. Reading defaults/main.yml directly ties the version assertion
+    # below.
+    - name: Load the role defaults
       ansible.builtin.include_vars:
         file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
         name: listmonk_defaults
