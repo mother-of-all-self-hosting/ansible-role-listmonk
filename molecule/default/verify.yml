@@ -465,11 +465,11 @@
     - name: Show the listmonk verification summary
       ansible.builtin.debug:
         msg:
-          - "systemd: {{ listmonk_service.status.ActiveState }}, restarts {{ listmonk_restarts_after.status.NRestarts }}"
-          - "unconfigured image: exited rc={{ listmonk_stock_control.rc }}"
-          - "un-installed database: exited rc={{ listmonk_install_control.rc }}, refused to serve"
-          - "public page: {{ listmonk_public_page.status }} on port {{ listmonk_container_http_port }}"
-          - "refusals: anonymous {{ listmonk_anonymous.status }}, forged session {{ listmonk_forged_session.status }}, wrong password {{ listmonk_bad_login.status }}"
-          - "version: {{ listmonk_config.json.data.version }} from {{ listmonk_container.Config.Image }}"
-          - "round trip: list {{ listmonk_created_list.json.data.id }}, subscriber {{ listmonk_created_subscriber.json.data.id }}, read back {{ listmonk_read_subscriber.json.data.total }} (absent search {{ listmonk_read_absent.json.data.total }})"
-          - "postgres ({{ listmonk_database_name }}): {{ listmonk_postgres_subscriber.stdout | trim }}"
+          - "listmonk systemd: {{ listmonk_service.status.ActiveState }}, restarts {{ listmonk_restarts_after.status.NRestarts }}"
+          - "listmonk version: {{ listmonk_config.json.data.version }} from {{ listmonk_container.Config.Image }}"
+          - "listmonk unconfigured image: exited rc={{ listmonk_stock_control.rc }}"
+          - "listmonk un-installed database: exited rc={{ listmonk_install_control.rc }}, refused to serve"
+          - "listmonk public page: {{ listmonk_public_page.status }} on port {{ listmonk_container_http_port }}"
+          - "listmonk refusals: anonymous {{ listmonk_anonymous.status }}, forged session {{ listmonk_forged_session.status }}, wrong password {{ listmonk_bad_login.status }}"
+          - "listmonk round trip: list {{ listmonk_created_list.json.data.id }}, subscriber {{ listmonk_created_subscriber.json.data.id }}, read back {{ listmonk_read_subscriber.json.data.total }} (absent search {{ listmonk_read_absent.json.data.total }})"
+          - "listmonk postgres ({{ listmonk_database_name }}): {{ listmonk_postgres_subscriber.stdout | trim }}"
