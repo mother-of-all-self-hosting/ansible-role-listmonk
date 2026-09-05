@@ -421,6 +421,18 @@
           subscriber row itself ({{ listmonk_postgres_subscriber.stdout | trim }})
 
     # ------------------------------------------------------------------
+    # TODO: Verify listmonk actually sends out messages
+    # ------------------------------------------------------------------
+
+    # The whole point of this scenario is to verify listmonk actually sends
+    # out messages, such that they are received by real subscribers or a
+    # mail server at least. Confirming that data persist in the database
+    # says very little on its own.
+    #
+    # Run a local mail server to confirm that listmonk sends out messages
+    # and they arrive as expected. Use ansible-role-mailpit or the like.
+
+    # ------------------------------------------------------------------
     # Nothing was quietly restarting while all of that was being checked
     # ------------------------------------------------------------------
 
