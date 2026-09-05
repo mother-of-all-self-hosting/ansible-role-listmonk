@@ -254,22 +254,15 @@
         status_code: [200]
       register: listmonk_config
 
-    # /api/config reports the version compiled into the running binary, so
-    # comparing it with the leaf variable Renovate bumps ties the process that is
-    # actually serving to the version the role claims to install. listmonk
+    # /api/config reports the version compiled into the running binary. listmonk
     # reports it with the `v` that its image tags carry.
     - name: Assert the running listmonk is the version this role installs
       ansible.builtin.assert:
         that:
           - listmonk_config.json.data.version == ('v' ~ listmonk_defaults.listmonk_version)
           - (listmonk_container.Config.Image | split(':') | last) == ('v' ~ listmonk_defaults.listmonk_version)
-        fail_msg: >-
-          The running listmonk reports {{ listmonk_config.json.data.version }} out of image
-          {{ listmonk_container.Config.Image }}, but `listmonk_version` pins
-          {{ listmonk_defaults.listmonk_version }}
-        success_msg: >-
-          The running listmonk reports itself as {{ listmonk_config.json.data.version }},
-          out of {{ listmonk_container.Config.Image }}, which is what `listmonk_version` pins
+        fail_msg: "listmonk reports {{ listmonk_config.json.data.version | default('none') }}, expected {{ listmonk_defaults.listmonk_version }}"
+        success_msg: "listmonk reports {{ listmonk_config.json.data.version }}"
 
     - name: Ask listmonk whether it is healthy
       ansible.builtin.uri:
