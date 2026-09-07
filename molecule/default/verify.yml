@@ -46,13 +46,13 @@
         file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
         name: listmonk_defaults
 
-    - name: Read the listmonk container the role created
+    - name: Inspect listmonk container
       ansible.builtin.command:
         cmd: "docker container inspect {{ listmonk_molecule_container }}"
       register: listmonk_container_raw
       changed_when: false
 
-    - name: Make sense of the listmonk container
+    - name: Parse the listmonk container definition
       ansible.builtin.set_fact:
         listmonk_container: "{{ (listmonk_container_raw.stdout | from_json)[0] }}"
 
