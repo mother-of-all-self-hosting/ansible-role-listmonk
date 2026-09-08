@@ -149,7 +149,7 @@
     - name: Retrieve the listmonk systemd service log for debugging
       when: listmonk_debug_service_enabled | bool
       ansible.builtin.command:
-        cmd: journalctl -xeu listmonk.service
+        cmd: journalctl --no-pager --output=cat --unit=listmonk.service
       changed_when: false
 
     # `active` only says the docker client is running. The public page is served
