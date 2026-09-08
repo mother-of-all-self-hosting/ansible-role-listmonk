@@ -460,18 +460,18 @@
     - name: Sample the listmonk restart counter again
       ansible.builtin.systemd_service:
         name: listmonk.service
-      register: listmonk_restarts_after
+      register: listmonk_service_after
 
     - name: Assert listmonk did not restart while it was up
       ansible.builtin.assert:
-        that: listmonk_restarts_after.status.NRestarts == listmonk_restarts_before.status.NRestarts
+        that: listmonk_service_after.status.NRestarts == listmonk_restarts_before.status.NRestarts
         fail_msg: >-
           listmonk restarted while it was supposedly up
           ({{ listmonk_restarts_before.status.NRestarts }} to
-          {{ listmonk_restarts_after.status.NRestarts }}), so `active` was hiding a crash loop
+          {{ listmonk_service_after.status.NRestarts }}), so `active` was hiding a crash loop
         success_msg: >-
           listmonk did not restart over 45 seconds of watching
-          (restarts so far: {{ listmonk_restarts_after.status.NRestarts }})
+          (restarts so far: {{ listmonk_service_after.status.NRestarts }})
 
     - name: Show the listmonk verification summary
       ansible.builtin.debug:
