@@ -476,7 +476,7 @@
     - name: Show the listmonk verification summary
       ansible.builtin.debug:
         msg:
-          - "listmonk systemd: {{ listmonk_service.status.ActiveState }}, restarts {{ listmonk_restarts_after.status.NRestarts }}"
+          - "listmonk systemd: {{ listmonk_service.status.ActiveState }}, {{ listmonk_service_after.status.NRestarts }} restart(s)"
           - "listmonk version: {{ listmonk_config.json.data.version }} from {{ listmonk_container.Config.Image }}"
           - "listmonk unconfigured image: exited rc={{ listmonk_stock_control.rc }}"
           - "listmonk un-installed database: exited rc={{ listmonk_install_control.rc }}, refused to serve"
