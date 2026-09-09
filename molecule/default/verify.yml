@@ -38,6 +38,8 @@
     listmonk_verify_absent_email: molecule-never-created@example.com
 
   tasks:
+    - name: Verify that listmonk works
+      block:
     # The role is not included in this playbook, so its defaults are not in
     # scope. Reading defaults/main.yml directly ties the version assertion
     # below.
@@ -484,3 +486,19 @@
           - "listmonk refusals: anonymous {{ listmonk_anonymous.status }}, forged session {{ listmonk_forged_session.status }}, wrong password {{ listmonk_bad_login.status }}"
           - "listmonk round trip: list {{ listmonk_created_list.json.data.id }}, subscriber {{ listmonk_created_subscriber.json.data.id }}, read back {{ listmonk_read_subscriber.json.data.total }} (absent search {{ listmonk_read_absent.json.data.total }})"
           - "listmonk postgres ({{ listmonk_database_name }}): {{ listmonk_postgres_subscriber.stdout | trim }}"
+
+      rescue:
+        # Whatever went wrong, the reason is almost always in the systemd service log.
+        - name: Retrieve the listmonk systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=listmonk.service
+          register: listmonk_service_log
+          changed_when: false
+
+        - name: Show the listmonk systemd service log
+          ansible.builtin.debug:
+            var: listmonk_service_log.stdout_lines
+
+        - name: Fail because verification did not pass
+          ansible.builtin.fail:
+            msg: "listmonk verification failed. The systemd service log is printed above."
