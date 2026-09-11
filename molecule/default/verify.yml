@@ -37,6 +37,10 @@
     # a search that discriminates, rather than a call returning whatever exists.
     listmonk_verify_absent_email: molecule-never-created@example.com
 
+    listmonk_verify_units:
+      - listmonk.service
+      - postgres.service
+
   tasks:
     - name: Verify that listmonk works
       block:
@@ -128,13 +132,14 @@
         # The unit is up and the service answers
         # ------------------------------------------------------------------
 
-        - name: Wait for the listmonk systemd service to become active (up to 180s)
+        - name: Wait for the listmonk systemd services to become active (up to 180s each)
           ansible.builtin.systemd_service:
-            name: listmonk.service
-          register: listmonk_service
-          until: listmonk_service.status.ActiveState == 'active'
+            name: "{{ item }}"
+          register: listmonk_services
+          until: listmonk_services.status.ActiveState == 'active'
           retries: 36
           delay: 5
+          loop: "{{ listmonk_verify_units }}"
           # So that giving up is reported by the assertion below rather than as a
           # wall of systemd unit properties.
           failed_when: false
@@ -142,17 +147,20 @@
         # `Restart=always` in the systemd unit means that even a container which crashes
         # and gets restarted reads as active here, so this is a precondition rather than
         # a result.
-        - name: Assert the listmonk systemd service is active
+        - name: Assert the listmonk systemd services are active
           ansible.builtin.assert:
-            that: listmonk_service.status.ActiveState == 'active'
-            fail_msg: "listmonk.service is not active ({{ listmonk_service.status.ActiveState }})"
-            success_msg: "listmonk.service is active"
+            that: listmonk_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+            fail_msg: >-
+              Not every service is active:
+              {{ dict(listmonk_verify_units | zip(listmonk_services.results | map(attribute='status.ActiveState'))) }}
+            success_msg: "Every systemd service is active"
 
-        - name: Retrieve the listmonk systemd service log for debugging
+        - name: Retrieve the listmonk systemd services log for debugging
           when: listmonk_debug_service_enabled | bool
           ansible.builtin.command:
-            cmd: journalctl --no-pager --output=cat --unit=listmonk.service
+            cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
           changed_when: false
+          loop: "{{ listmonk_verify_units }}"
 
         # `active` only says the docker client is running. The public page is served
         # by listmonk itself, and only once it has installed its schema, upgraded it
@@ -478,7 +486,7 @@
         - name: Show the listmonk verification summary
           ansible.builtin.debug:
             msg:
-              - "listmonk systemd: {{ listmonk_service.status.ActiveState }}, {{ listmonk_service_after.status.NRestarts }} restart(s)"
+              - "listmonk systemd: {% for unit, state in listmonk_verify_units | zip(listmonk_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "listmonk version: {{ listmonk_config.json.data.version }} from {{ listmonk_container.Config.Image }}"
               - "listmonk unconfigured image: exited rc={{ listmonk_stock_control.rc }}"
               - "listmonk un-installed database: exited rc={{ listmonk_install_control.rc }}, refused to serve"
