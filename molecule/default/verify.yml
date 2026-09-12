@@ -280,18 +280,24 @@
             fail_msg: "listmonk reports {{ listmonk_config.json.data.version | default('none') }}, expected {{ listmonk_defaults.listmonk_version }}"
             success_msg: "listmonk reports {{ listmonk_config.json.data.version }}"
 
-        - name: Ask listmonk whether it is healthy
+        - name: Wait for listmonk to report itself healthy (up to 180s)
           ansible.builtin.uri:
             url: "{{ listmonk_verify_url }}/api/health"
             headers:
               Cookie: "{{ listmonk_session }}"
             status_code: [200]
           register: listmonk_health
+          until: listmonk_health.status == 200 and listmonk_health.json.data
+          retries: 36
+          delay: 5
+          # So that giving up is reported by the assertion below rather than as a
+          # wall of systemd unit properties.
+          failed_when: false
 
         - name: Assert listmonk reports itself healthy
           ansible.builtin.assert:
             that: listmonk_health.json.data
-            fail_msg: "listmonk's health endpoint answered {{ listmonk_health.json }}"
+            fail_msg: "listmonk did not report itself healthy: {{ listmonk_health.json | default('no response') }}"
             success_msg: "listmonk reports itself healthy"
 
         # ------------------------------------------------------------------
