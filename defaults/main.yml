@@ -112,7 +112,7 @@ listmonk_container_extra_arguments: "{{ listmonk_container_extra_arguments_auto 
 listmonk_container_extra_arguments_auto: []
 listmonk_container_extra_arguments_custom: []
 
-# A list of extra arguments to pass to the listmonk process
+# A list of extra arguments to pass to the process inside the container
 # Example: ['--SOME_ARGUMENT']
 # Refer to https://listmonk.app/docs/installation/ for details about the commands inside `listmonk_process_extra_arguments_auto`
 listmonk_process_extra_arguments: "{{ listmonk_process_extra_arguments_auto + listmonk_process_extra_arguments_custom }}"
