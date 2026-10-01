@@ -47,6 +47,8 @@ Currently there is one testing scenario available.
 
 ### `default`
 
+⚠️ listmonk's SMTP settings are not part of this role, so the test therefore is rather meaningless on this point in the end.
+
 Tests a standard listmonk installation, against a Postgres installed by [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) and reached over a Unix socket.
 
 The verification does not stop at "the systemd service is active". It:
@@ -60,8 +62,6 @@ The verification does not stop at "the systemd service is active". It:
 - watches the service for long enough to catch a crash loop hiding behind `active`
 
 The scenario deliberately runs listmonk on a port and against a database name that are not its defaults, so that a configuration file which never reached the process would show up as a failure rather than as a pass.
-
-listmonk's SMTP settings are not part of this role - listmonk keeps them in its database, seeded during `--install` - so the scenario does not attempt a mail delivery probe. It would be testing listmonk's own defaults rather than the role.
 
 ## Running
 
