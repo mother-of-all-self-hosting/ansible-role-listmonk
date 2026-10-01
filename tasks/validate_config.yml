@@ -32,6 +32,25 @@
     - { "name": "listmonk_database_socket_path_host", when: "{{ listmonk_database_socket_enabled }}" }
     - { "name": "listmonk_database_hostname", when: "{{ not listmonk_database_socket_enabled }}" }
     - { "name": "listmonk_database_password", when: true }
+    - { "name": "listmonk_environment_variables_listmonk_admin_user", when: "{{ listmonk_environment_variables_listmonk_admin_enabled }}" }
+    - { "name": "listmonk_environment_variables_listmonk_admin_password", when: "{{ listmonk_environment_variables_listmonk_admin_enabled }}" }
+
+- name: Run if administrator account creation is enabled
+  when: listmonk_environment_variables_listmonk_admin_enabled | bool
+  block:
+    - name: Fail if listmonk administrator username length is less than 3 characters
+      ansible.builtin.fail:
+        msg: >-
+          The value of `listmonk_environment_variables_listmonk_admin_user` must have
+          at least 3 characters.
+      when: listmonk_environment_variables_listmonk_admin_user | length < 3
+
+    - name: Fail if listmonk administrator password length is less than 8 characters
+      ansible.builtin.fail:
+        msg: >-
+          The value of `listmonk_environment_variables_listmonk_admin_password` must have
+          at least 8 characters.
+      when: listmonk_environment_variables_listmonk_admin_password | length < 8
 
 - name: Run if Traefik is enabled
   when: listmonk_container_labels_traefik_enabled | bool

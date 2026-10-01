@@ -247,13 +247,16 @@ listmonk_environment_variables_listmonk_db_host: "{{ listmonk_database_socket_pa
 # Specify the timezone
 listmonk_environment_variables_tz: UTC
 
-# Additional environment variables to pass to the listmonk container.
-# You can use this to further influence the default configuration.
-#
-# Example:
-# listmonk_environment_variables_additional_variables: |
-#   LISTMONK_ADMIN_USER=admin
-#   LISTMONK_ADMIN_PASSWORD=SUPERSECRETPASSWORD
+# Control if administrator creation during the installation is enabled
+listmonk_environment_variables_listmonk_admin_enabled: true
+
+# Specify the administrator username
+listmonk_environment_variables_listmonk_admin_user: ""
+
+# Specify the administrator password
+listmonk_environment_variables_listmonk_admin_password: ""
+
+# Additional environment variables
 listmonk_environment_variables_additional_variables: ""
 
 # listmonk_restart_necessary controls whether the listmonk systemd

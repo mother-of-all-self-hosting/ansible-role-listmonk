@@ -226,8 +226,8 @@
         # The administrator appears nowhere in the role's own variables. listmonk
         # creates it during `--install` out of LISTMONK_ADMIN_USER and
         # LISTMONK_ADMIN_PASSWORD, which reach the container only through
-        # `listmonk_environment_variables_additional_variables`. Logging in with it
-        # is what proves that free-form pass-through arrives intact.
+        # `listmonk_environment_variables_listmonk_admin_*` variables. Logging in with it
+        # is what proves that they arrive intact.
         - name: Log in to listmonk as the administrator the role's configuration created
           ansible.builtin.uri:
             url: "{{ listmonk_verify_url }}/admin/login"
@@ -253,10 +253,10 @@
             fail_msg: >-
               Logging in as {{ listmonk_molecule_admin_username }} produced no session cookie
               ({{ listmonk_login.set_cookie | default('no Set-Cookie header') }}), so
-              `listmonk_environment_variables_additional_variables` did not reach the container
+              the `listmonk_environment_variables_listmonk_admin_*` variables did not reach the container
             success_msg: >-
               listmonk issued a session to {{ listmonk_molecule_admin_username }}, the
-              administrator `listmonk_environment_variables_additional_variables` named
+              administrator `listmonk_environment_variables_listmonk_admin_*` variables named
 
         # ------------------------------------------------------------------
         # The running process is the version this role pins

@@ -76,12 +76,11 @@ provisioner:
         # does not attempt one. Should the role ever grow SMTP variables of its
         # own, that reasoning stops holding.
 
-        # Passed through to the container verbatim. listmonk turns these two into
+        # listmonk turns these two into
         # a superadmin on its first install; nothing else in the role knows about
         # them, which makes a successful login proof that the pass-through works.
-        listmonk_environment_variables_additional_variables: |
-          LISTMONK_ADMIN_USER={{ listmonk_molecule_admin_username }}
-          LISTMONK_ADMIN_PASSWORD={{ listmonk_molecule_admin_password }}
+        listmonk_environment_variables_listmonk_admin_user: "{{ listmonk_molecule_admin_username }}"
+        listmonk_environment_variables_listmonk_admin_password: "{{ listmonk_molecule_admin_password }}"
 
         # Variables required for listmonk to connect to the Postgres database (via Unix socket)
         listmonk_database_username: my_database_username

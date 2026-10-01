@@ -66,6 +66,26 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 **Note**: hosting listmonk under a subpath does not seem to be possible due to listmonk's technical limitations.
 
+### Set administrator's account details
+
+By default it is necessary to create an administrator account on initial installing by adding the following configuration to your `vars.yml` file:
+
+```yaml
+listmonk_environment_variables_listmonk_admin_user: YOUR_ADMIN_USERNAME_HERE
+listmonk_environment_variables_listmonk_admin_password: YOUR_ADMIN_PASSWORD_HERE
+```
+
+The username must be at least 3 characters long, and the password at least 8 characters long (refer to [this line](https://github.com/knadh/listmonk/blob/c13bba4e2f840b3d2628eb636202a878fd91e984/cmd/install.go#L90) on the source code).
+
+>[!NOTE]
+> Changing those values does not update them once the user is created. The password can be updated on the listmonk's UI.
+
+You can disable it by adding the following configuration to your `vars.yml` file:
+
+```yaml
+listmonk_environment_variables_listmonk_admin_enabled: false
+```
+
 ### Configuring database
 
 #### Set variables for the database server
@@ -100,24 +120,6 @@ listmonk_database_socket_enabled: false
 listmonk_database_hostname: YOUR_POSTGRES_SERVER_HOSTNAME_HERE
 listmonk_database_port: 5432
 ```
-
-### Creating the administrator account
-
-listmonk sets its database up on its first start, and how it does so decides who ends up owning your instance.
-
-If you tell it about an administrator, it creates that account during the install and nobody else can claim it:
-
-```yaml
-listmonk_environment_variables_additional_variables: |
-  LISTMONK_ADMIN_USER=YOUR_ADMIN_USERNAME_HERE
-  LISTMONK_ADMIN_PASSWORD=YOUR_ADMIN_PASSWORD_HERE
-```
-
-The password must be at least 8 characters long.
-
-If you do not, listmonk logs `no superadmin user created. Visit webpage to create user.` and serves a first-run form at `/admin/login` inviting whoever arrives to pick a username and password for the Super Admin account. Since this role publishes listmonk on a public hostname, that is a race with the internet, so setting the two variables above before the first installation is strongly recommended.
-
-The variables only matter for the install. Once the account exists, listmonk manages users in its own database and you can remove them (or change the password from within listmonk's own interface).
 
 ### Extending the configuration
 
