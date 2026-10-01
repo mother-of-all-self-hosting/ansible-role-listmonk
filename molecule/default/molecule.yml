@@ -68,14 +68,6 @@ provisioner:
         listmonk_container_http_port: 9123
         listmonk_container_http_host_bind_port: 127.0.0.1:9123
 
-        # The role writes nothing at all about SMTP: listmonk keeps its mail
-        # settings in the database (the `settings` table, under `app.smtp`),
-        # seeded from its own defaults during `--install`. A delivery probe
-        # against a local mail sink would therefore be exercising listmonk's
-        # built-in settings rather than anything this role does, so the scenario
-        # does not attempt one. Should the role ever grow SMTP variables of its
-        # own, that reasoning stops holding.
-
         # listmonk turns these two into
         # a superadmin on its first install; nothing else in the role knows about
         # them, which makes a successful login proof that the pass-through works.

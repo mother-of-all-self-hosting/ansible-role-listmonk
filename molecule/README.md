@@ -47,7 +47,7 @@ Currently there is one testing scenario available.
 
 ### `default`
 
-⚠️ listmonk's SMTP settings are not part of this role, so the test therefore is rather meaningless on this point in the end.
+⚠️ The scenario does not confirm that the listmonk's SMTP function would work, so the test is rather meaningless to begin with.
 
 Tests a standard listmonk installation, against a Postgres installed by [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) and reached over a Unix socket.
 
