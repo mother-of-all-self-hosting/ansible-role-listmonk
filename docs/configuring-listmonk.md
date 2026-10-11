@@ -68,7 +68,7 @@ After adjusting the hostname, make sure to adjust your DNS records to point the 
 
 ### Set administrator's account details
 
-By default it is necessary to create an administrator account on initial installing by adding the following configuration to your `vars.yml` file:
+By default you also need to specify administrator's account details by adding the following configuration to your `vars.yml` file:
 
 ```yaml
 listmonk_environment_variables_listmonk_admin_user: YOUR_ADMIN_USERNAME_HERE
@@ -78,9 +78,9 @@ listmonk_environment_variables_listmonk_admin_password: YOUR_ADMIN_PASSWORD_HERE
 The username must be at least 3 characters long, and the password at least 8 characters long (refer to [this line](https://github.com/knadh/listmonk/blob/c13bba4e2f840b3d2628eb636202a878fd91e984/cmd/install.go#L90) on the source code).
 
 >[!NOTE]
-> Changing those values does not update them once the user is created. The password can be updated on the listmonk's UI.
+> Subsequent changes to them will not affect the existing user. The password can be updated on the listmonk's UI.
 
-You can disable it by adding the following configuration to your `vars.yml` file:
+You can disable the administrator's account by adding the following configuration to your `vars.yml` file:
 
 ```yaml
 listmonk_environment_variables_listmonk_admin_enabled: false
