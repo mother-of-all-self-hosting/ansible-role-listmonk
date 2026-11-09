@@ -82,8 +82,8 @@ provisioner:
         listmonk_environment_variables_listmonk_admin_password: "{{ listmonk_molecule_admin_password }}"
 
         # Variables required for listmonk to connect to the Postgres database (via Unix socket)
-        listmonk_database_username: my_database_username
-        listmonk_database_password: my_database_password
+        listmonk_database_username: /#@my_database_username?%
+        listmonk_database_password: /#@my_database_password?%
         # Deliberately not the role's default of `listmonk`, for the same reason
         # as the port above: the verification looks for listmonk's schema in
         # exactly this database, and only `LISTMONK_db__database` can point it there.
