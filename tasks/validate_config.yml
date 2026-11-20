@@ -24,11 +24,6 @@
       You need to define a required configuration setting (`{{ item.name }}`).
   when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
-    - { "name": "listmonk_uid", when: true }
-    - { "name": "listmonk_gid", when: true }
-    - { "name": "listmonk_hostname", when: true }
-    - { "name": "listmonk_path_prefix", when: true }
-    - { "name": "listmonk_container_network", when: true }
     - { "name": "listmonk_database_socket_path_host", when: "{{ listmonk_database_socket_enabled }}" }
     - { "name": "listmonk_database_hostname", when: "{{ not listmonk_database_socket_enabled }}" }
     - { "name": "listmonk_database_password", when: true }
